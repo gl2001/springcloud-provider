@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sz.gl.dao.IEmpDAO" >
+	
+	
+	
+	<select id="findallemp" resultType="cn.sz.gl.pojo.Emp">
+		select empno,ename as empName,job,mgr,hiredate,sal,comm,deptno from emp
+	</select>
+	
+	<select id="findEmpByEmpno" parameterType="java.lang.Integer" resultType="cn.sz.gl.pojo.Emp">
+		select empno,ename as empName,job,mgr,hiredate,sal,comm,deptno from emp 
+		where empno=#{empno}
+	</select>
+	
+	<insert id="insertEmp" parameterType="cn.sz.gl.pojo.Emp">
+		insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno) 
+		values(emp_seq.nextval,#{empName,jdbcType=VARCHAR},#{job,jdbcType=VARCHAR},#{mgr,jdbcType=INTEGER},#{hiredate,jdbcType=DATE},#{sal,jdbcType=DOUBLE},#{comm,jdbcType=DOUBLE},#{dept.deptno,jdbcType=INTEGER})
+	</insert>
+	
+	<delete id="deleteEmp" parameterType="java.lang.Integer">
+		delete from emp where empno=#{empno}
+	</delete>
+	
+	<update id="updateEmp" parameterType="cn.sz.gl.pojo.Emp">
+		update emp set 
+		
+		<set>
+			<if test="empName!=null"> ename=#{empName}, </if>
+			<if test="job!=null"> job=#{job}, </if>
+			<if test="mgr!=null" > mgr=#{mgr}, </if>
+			<if test="hiredate!=null">hiredate=#{hiredate}, </if>
+			<if test="sal!=null">sal=#{sal}, </if>
+			<if test="comm!=null"> comm=#{comm}, </if>
+			<if test="dept!=null and dept.deptno!=null">deptno=#{dept.deptno} </if>
+		</set>
+		
+		where empno=#{empno}
+	</update>
+	
+	
+</mapper>
